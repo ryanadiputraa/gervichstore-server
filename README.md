@@ -27,7 +27,8 @@ Backend server for gervichstore-client website.
                 "image": "String",
                 "name": "String",
                 "price": "Number",
-                "stock": "Number"
+                "stock": "Number",
+                "category": "String"
             }
         ]
     }
@@ -48,7 +49,8 @@ Backend server for gervichstore-client website.
     "image": "String",
     "name": "String",
     "price": "Number",
-    "stock": "Number"
+    "stock": "Number",
+    "category": "String"
 }
 ```
 
@@ -77,7 +79,8 @@ Backend server for gervichstore-client website.
         "image": "String",
         "name": "String",
         "price": "Number",
-        "stock": "Number"
+        "stock": "Number",
+        "category": "String"
     }
 }
 ```
@@ -96,7 +99,8 @@ Backend server for gervichstore-client website.
     "image": "String",
     "name": "String",
     "price": "Number",
-    "stock": "Number"
+    "stock": "Number",
+    "category": "String"
 }
 ```
 
