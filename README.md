@@ -6,6 +6,82 @@ Backend server for gervichstore-client website.
 
 ---
 
+## Users
+
+### Login User
+
+-   Method : `GET`
+-   Endpoint : `/api/users/login`
+-   Header : 
+    -   Content-Type : `application/json`
+    -   Accept : `application/json`
+-   Body :
+```json
+{
+    "email": "String",
+    "password": "String" 
+}
+```
+-   Response :
+```json
+{
+    "code": "Number",
+    "token": "String"
+}
+```
+
+### Register User
+
+-   Method : `POST`
+-   Endpoint : `/api/users/register`
+-   Header : 
+    -   Content-Type : `application/json`
+    -   Accept : `application/json`
+-   Body :
+```json
+{
+    "phoneNumber": "String",
+    "password": "String",
+    "firstName": "String",
+    "lastName": "String",
+}
+```
+-   Response : 
+```json
+{
+    "code": "Number"
+}
+```
+
+### Update User
+
+-   Method : `PUT`
+-   Endpoint : `/api/users`
+-   Header : 
+    -   Content-Type : `application/json`
+    -   Accept : `application/json`
+-   Body :
+```json
+{   
+    "phoneNumber": "String",
+    "password": "String",
+    "firstName": "String",
+    "lastName": "String",
+    "email": "String",
+    "gender": "String",
+    "image": "String"
+}
+```
+-   Response : 
+```json
+{
+    "code": "Number"
+}
+```
+
+---
+
+
 ## Items
 
 ### Get All Items
