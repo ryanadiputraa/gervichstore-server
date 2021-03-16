@@ -8,7 +8,9 @@ import (
 )
 
 // THINGS TO DO
+// - added db (postgresql)
 // - handle itemsApi for itemController
+// - added auth for create, update, and delete items
 
 func main() {
 

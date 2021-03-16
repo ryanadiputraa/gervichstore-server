@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/ryanadiputraa/gervichstore-server/api"
+	"github.com/ryanadiputraa/gervichstore-server/helpers"
 )
 
 // ItemController is a controller for /api/item route
@@ -18,8 +19,7 @@ func ItemController(w http.ResponseWriter, r *http.Request) {
 	case "DELETE":
 		api.DeleteItem(w, r)
 	default:
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		w.Write([]byte("method not allowed"))
+		helpers.WriteResponse(w, r, "application/json", http.StatusMethodNotAllowed, []byte("Method not allowed"))
 		return
 	}
 }

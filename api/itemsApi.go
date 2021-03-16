@@ -20,8 +20,7 @@ func GetAllItems(w http.ResponseWriter, r *http.Request) {
 	
 	jsonBytes, err := json.Marshal(response)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("internal server error"))
+		helpers.WriteResponse(w, r, "application/json", http.StatusInternalServerError, []byte("Internal server error"))
 		return	
 	}
 
