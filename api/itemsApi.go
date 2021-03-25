@@ -10,8 +10,9 @@ import (
 
 // GetAllItems is an api handler to serve all items in db
 func GetAllItems(w http.ResponseWriter, r *http.Request) {
-	items := []models.Items {}
-	items = append(items, models.Items{})
+	items := models.Items{}
+	newItem := models.NewItem()
+	items = append(items, *newItem)
 
 	response := helpers.ItemsResponseFormat {
 		Code: http.StatusOK,
