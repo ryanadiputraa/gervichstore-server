@@ -13,7 +13,7 @@ func ItemsController(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		api.GetAllItems(w, r)
 	default:
-	 	helpers.WriteResponse(w, r, "application/json", http.StatusMethodNotAllowed, []byte("Method not allowed"))
+		helpers.WriteErrorResponse(w, r, http.StatusMethodNotAllowed, "Method not allowed")
 		return
 	}
 }
