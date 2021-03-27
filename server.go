@@ -10,9 +10,7 @@ import (
 )
 
 // THINGS TO DO
-// - added db (postgresql)
-// - handle itemsApi for itemController
-// - added auth for create, update, and delete items
+// - handle items api get, getAll, update, delete
 
 func main() {
 
@@ -22,7 +20,7 @@ func main() {
 
 	// 404
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		helpers.WriteResponse(w, r, "application/json", http.StatusNotFound, []byte("Not found"))
+		helpers.WriteResponse(w, r, "application/json", http.StatusNotFound, []byte("not found"))
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))

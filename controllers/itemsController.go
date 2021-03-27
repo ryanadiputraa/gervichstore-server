@@ -9,11 +9,13 @@ import (
 
 // ItemsController is a controller for /api/items route
 func ItemsController(w http.ResponseWriter, r *http.Request) {
+	itemHandlers := api.NewItemHandlers()
+
 	switch r.Method {
 	case "GET":
-		api.GetAllItems(w, r)
+		itemHandlers.GetAllItems(w, r)
 	default:
-		helpers.WriteErrorResponse(w, r, http.StatusMethodNotAllowed, "Method not allowed")
+		helpers.WriteErrorResponse(w, r, http.StatusMethodNotAllowed, "method not allowed")
 		return
 	}
 }

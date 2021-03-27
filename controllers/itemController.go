@@ -9,17 +9,19 @@ import (
 
 // ItemController is a controller for /api/item route
 func ItemController(w http.ResponseWriter, r *http.Request) {
+	itemHandlers := api.NewItemHandlers()
+
 	switch r.Method {
 	case "GET":
-		api.GetItem(w, r)	
+		itemHandlers.GetItem(w, r)	
 	case "POST":
-		api.CreateItem(w, r)
+		itemHandlers.CreateItem(w, r)
 	case "PUT":
-		api.UpdateItem(w, r)
+		itemHandlers.UpdateItem(w, r)
 	case "DELETE":
-		api.DeleteItem(w, r)
+		itemHandlers.DeleteItem(w, r)
 	default:
-		helpers.WriteErrorResponse(w, r, http.StatusMethodNotAllowed, "Method not allowed")
+		helpers.WriteErrorResponse(w, r, http.StatusMethodNotAllowed, "method not allowed")
 		return
 	}
 }
