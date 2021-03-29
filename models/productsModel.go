@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type Item struct {
+type Product struct {
 	ID string `json:"id"`
 	Image string `json:"image"`
 	Name string `json:"name"`
@@ -13,10 +13,10 @@ type Item struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-type Items []Item
+type Products []Product
 
-func NewItem() *Item {
-	return &Item{
+func NewProduct() *Product {
+	return &Product{
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}

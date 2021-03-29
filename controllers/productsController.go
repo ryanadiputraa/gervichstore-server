@@ -7,13 +7,13 @@ import (
 	"github.com/ryanadiputraa/gervichstore-server/helpers"
 )
 
-// ItemsController is a controller for /api/items route
-func ItemsController(w http.ResponseWriter, r *http.Request) {
-	itemHandlers := api.NewItemHandlers()
+// ProductsController is a controller for /api/products route
+func ProductsController(w http.ResponseWriter, r *http.Request) {
+	productHandlers := api.NewProductHandlers()
 
 	switch r.Method {
 	case "GET":
-		itemHandlers.GetAllItems(w, r)
+		productHandlers.GetAllProducts(w, r)
 	default:
 		helpers.WriteErrorResponse(w, r, http.StatusMethodNotAllowed, "method not allowed")
 		return

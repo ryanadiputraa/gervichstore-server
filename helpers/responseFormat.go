@@ -13,14 +13,14 @@ type ErrorMessageFormat struct {
 	Error string `json:"error"`
 }
 
-// ItemsResponseFormat is a http response format for array of item
-type ItemsResponseFormat struct {
+// ProductsResponseFormat is a http response format for array of product
+type ProductsResponseFormat struct {
 	Code int `json:"code"`
-	Data []models.Item `json:"data"`
+	Data []models.Product `json:"data"`
 }
 
-// ItemResponseFormat is a http response format for single item
-type ItemResponseFormat struct {
+// ProductResponseFormat is a http response format for single product
+type ProductResponseFormat struct {
 	Code int `json:"code"`
-	Data models.Item `json:"data"`
+	Data models.Product `json:"data"`
 }

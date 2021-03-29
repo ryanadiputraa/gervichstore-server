@@ -82,12 +82,12 @@ Backend server for gervichstore-client website.
 ---
 
 
-## Items
+## Products
 
-### Get All Items
+### Get All Products
 
 -   Method : `GET`
--   Endpoint : `/api/items`
+-   Endpoint : `/api/products`
 -   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`
@@ -98,21 +98,23 @@ Backend server for gervichstore-client website.
     "code": "Number",
     "data": [
         {
-            "id": "String",
+            "id": "Number",
             "image": "String",
             "name": "String",
             "price": "Number",
             "stock": "Number",
-            "category": "String"
+            "category": "String",
+            "created_at": "TimeStamp",
+            "updated_at": "TimeStamp"
         }
     ]
 }
 ```
 
-### Create Item
+### Create Product
 
 -   Method : `POST`
--   Endpoint : `/api/items/`
+-   Endpoint : `/api/products/`
 -   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`
@@ -136,10 +138,10 @@ Backend server for gervichstore-client website.
 }
 ```
 
-### Get Item By Id
+### Get Product By Id
 
 -   Method : `GET`
--   Endpoint : `/api/items/:id_item`
+-   Endpoint : `/api/products/:id_product`
 -   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`
@@ -149,20 +151,22 @@ Backend server for gervichstore-client website.
 {
     "code": "Number",
     "data": {
-        "id": "String",
+        "id": "Number",
         "image": "String",
         "name": "String",
         "price": "Number",
         "stock": "Number",
-        "category": "String"
+        "category": "String",
+        "created_at": "TimeStamp",
+        "updated_at": "TimeStamp"
     }
 }
 ```
 
-### Search Item
+### Search Product
 
 - Method : `GET`
-- Endpoint : `/api/items/:item_name`
+- Endpoint : `/api/products/:product_name`
 -   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`
@@ -171,20 +175,22 @@ Backend server for gervichstore-client website.
 {
     "code": "Number",
     "data": {
-        "id": "String",
+        "id": "Number",
         "image": "String",
         "name": "String",
         "price": "Number",
         "stock": "Number",
-        "category": "String"
+        "category": "String",
+        "created_at": "TimeStamp",
+        "updated_at": "TimeStamp"
     }
 }
 ```
 
-### Update Item
+### Update Product
 
 -   Method : `PUT`
--   Endpoint : `/api/items/:id_item`
+-   Endpoint : `/api/products/:id_product`
 -   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`
@@ -196,7 +202,7 @@ Backend server for gervichstore-client website.
     "name": "String",
     "price": "Number",
     "stock": "Number",
-    "category": "String"
+    "category": "String",
 }
 ```
 
@@ -208,10 +214,10 @@ Backend server for gervichstore-client website.
 }
 ```
 
-### Delete Item
+### Delete Product
 
 -   Method : `PUT`
--   Endpoint : `/api/items/:id_item`
+-   Endpoint : `/api/products/:id_product`
 -   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`
@@ -244,7 +250,7 @@ Backend server for gervichstore-client website.
         {
             "id": "String",
             "status": "String",
-            "items": "[]Items",
+            "products": "[]Products",
             "totalPrice": "Number"
         }
     ]
@@ -263,7 +269,7 @@ Backend server for gervichstore-client website.
 ```json
 {
     "status": "String",
-    "items": "[]Items",
+    "products": "[]Products",
     "totalPrice": "Number"
 }
 ```
