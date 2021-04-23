@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/ryanadiputraa/gervichstore-server/config"
 	"github.com/ryanadiputraa/gervichstore-server/helpers"
@@ -100,8 +101,17 @@ func(*ProductHandlers) CreateProduct(w http.ResponseWriter, r *http.Request) {
 
 // GetProduct is an api handler to find certain product in db based on product id
 func(*ProductHandlers) GetProduct(w http.ResponseWriter, r *http.Request) {
-	return
+	db, err := config.OpenConnection()
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
+		return
+	}
 
+	productId := strings.Split(r.URL.String(), "/")[3]
+	print(productId)
+	// row, err := db.Query("SELECT * FROM products WHERE id=%v", productId)
+	
+	return
 }
 
 // UpdateProduct is an api handler to update certain product in db based on product id
