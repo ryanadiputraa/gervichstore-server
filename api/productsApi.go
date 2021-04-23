@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -41,7 +42,7 @@ func (*ProductHandlers) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var products models.Products
-
+	
 	for rows.Next() {
 		var product models.Product
 		rows.Scan(&product.ID, &product.Image, &product.Name, &product.Price, &product.Stock, &product.Category, &product.CreatedAt, &product.UpdatedAt)
@@ -57,7 +58,6 @@ func (*ProductHandlers) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 	helpers.WriteResponse(w, r, "application/json", http.StatusOK, jsonBytes)
 	defer rows.Close()
 	defer db.Close()
-
 	return
 }
 
@@ -95,7 +95,6 @@ func(*ProductHandlers) CreateProduct(w http.ResponseWriter, r *http.Request) {
 	
 	helpers.WriteResponse(w, r, "application/json", http.StatusCreated, jsonBytes)
 	defer db.Close()
-
 	return
 }
 
@@ -108,9 +107,29 @@ func(*ProductHandlers) GetProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	productId := strings.Split(r.URL.String(), "/")[3]
-	print(productId)
-	// row, err := db.Query("SELECT * FROM products WHERE id=%v", productId)
+	row, err := db.Query(fmt.Sprintf("SELECT * FROM products WHERE id=%v", productId))
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")	
+		return	
+	}
+
+	var product models.Product
+	isNotNull := row.Next()
+	if !isNotNull {
+		helpers.WriteErrorResponse(w, r, http.StatusNotFound, "not found")	
+		return	
+	}
+	row.Scan(&product.ID, &product.Image, &product.Name, &product.Price, &product.Stock, &product.Category, &product.CreatedAt, &product.UpdatedAt)
 	
+	jsonBytes, err := json.Marshal(product)
+	if err != nil {
+		helpers.WriteInternalServerError(w, r)
+		return	
+	}
+
+	helpers.WriteResponse(w, r, "application/json", http.StatusOK, jsonBytes)
+	defer row.Close()
+	defer db.Close()
 	return
 }
 
