@@ -16,7 +16,7 @@ type ErrorMessageFormat struct {
 // ProductsResponseFormat is a http response format for array of product
 type ProductsResponseFormat struct {
 	Code int `json:"code"`
-	Data []models.Product `json:"data"`
+	Data models.Products `json:"data"`
 }
 
 // ProductResponseFormat is a http response format for single product

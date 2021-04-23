@@ -75,11 +75,11 @@ func(*ProductHandlers) CreateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	
-	query := `INSERT INTO products (id, image, name, price, stock, category, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
+	query := `INSERT INTO products (image, name, price, stock, category, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
 
-	_, err = db.Exec(query, newProduct.ID, newProduct.Image, newProduct.Name, newProduct.Price, newProduct.Stock, newProduct.Category, newProduct.CreatedAt, newProduct.UpdatedAt)
+	_, err = db.Exec(query, newProduct.Image, newProduct.Name, newProduct.Price, newProduct.Stock, newProduct.Category, newProduct.CreatedAt, newProduct.UpdatedAt)
 	if err != nil {
-		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")	
 		return
 	}
 
