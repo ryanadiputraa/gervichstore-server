@@ -3,6 +3,8 @@ package helpers
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/ryanadiputraa/gervichstore-server/models"
 )
 
 // WriteResponse is a helper for writing http response
@@ -22,7 +24,7 @@ func WriteInternalServerError(w http.ResponseWriter, r *http.Request) {
 }
 
 func WriteErrorResponse(w http.ResponseWriter, r *http.Request, statusCode int, errorMessage string) {
-	response := ErrorMessageFormat {
+	response := models.ErrorMessageFormat {
 		Code: statusCode,
 		Error: errorMessage,
 	}

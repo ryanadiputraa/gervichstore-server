@@ -1,6 +1,4 @@
-package helpers
-
-import "github.com/ryanadiputraa/gervichstore-server/models"
+package models
 
 // SuccessMessageFormat is a http response format for success status
 type SuccessMessageFormat struct {
@@ -16,11 +14,11 @@ type ErrorMessageFormat struct {
 // ProductsResponseFormat is a http response format for array of product
 type ProductsResponseFormat struct {
 	Code int `json:"code"`
-	Data models.Products `json:"data"`
+	Data Products `json:"data"`
 }
 
 // ProductResponseFormat is a http response format for single product
 type ProductResponseFormat struct {
 	Code int `json:"code"`
-	Data models.Product `json:"data"`
+	Data Product `json:"data"`
 }

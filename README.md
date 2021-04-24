@@ -12,17 +12,20 @@ Backend server for gervichstore-client website.
 
 -   Method : `GET`
 -   Endpoint : `/api/users/login`
--   Header : 
+-   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`
 -   Body :
+
 ```json
 {
     "email": "String",
-    "password": "String" 
+    "password": "String"
 }
 ```
+
 -   Response :
+
 ```json
 {
     "code": "Number",
@@ -34,19 +37,22 @@ Backend server for gervichstore-client website.
 
 -   Method : `POST`
 -   Endpoint : `/api/users/register`
--   Header : 
+-   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`
 -   Body :
+
 ```json
 {
     "phoneNumber": "String",
     "password": "String",
     "firstName": "String",
-    "lastName": "String",
+    "lastName": "String"
 }
 ```
--   Response : 
+
+-   Response :
+
 ```json
 {
     "code": "Number"
@@ -57,12 +63,13 @@ Backend server for gervichstore-client website.
 
 -   Method : `PUT`
 -   Endpoint : `/api/users`
--   Header : 
+-   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`
 -   Body :
+
 ```json
-{   
+{
     "phoneNumber": "String",
     "password": "String",
     "firstName": "String",
@@ -72,7 +79,9 @@ Backend server for gervichstore-client website.
     "image": "String"
 }
 ```
--   Response : 
+
+-   Response :
+
 ```json
 {
     "code": "Number"
@@ -80,7 +89,6 @@ Backend server for gervichstore-client website.
 ```
 
 ---
-
 
 ## Products
 
@@ -165,12 +173,13 @@ Backend server for gervichstore-client website.
 
 ### Search Product
 
-- Method : `GET`
-- Endpoint : `/api/products/:product_name`
+-   Method : `GET`
+-   Endpoint : `/api/products/:product_name`
 -   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`
-- Response :
+-   Response :
+
 ```json
 {
     "code": "Number",
@@ -203,6 +212,7 @@ Backend server for gervichstore-client website.
     "price": "Number",
     "stock": "Number",
     "category": "String",
+    "updated_at": "TimeStamp"
 }
 ```
 
@@ -266,6 +276,7 @@ Backend server for gervichstore-client website.
     -   Accept : `application/json`
     -   x-access-token: `token`
 -   Body :
+
 ```json
 {
     "status": "String",
@@ -273,7 +284,9 @@ Backend server for gervichstore-client website.
     "totalPrice": "Number"
 }
 ```
-- Response : 
+
+-   Response :
+
 ```json
 {
     "code": "Number"
@@ -288,7 +301,8 @@ Backend server for gervichstore-client website.
     -   Content-Type : `application/json`
     -   Accept : `application/json`
     -   x-access-token: `token`
-- Response : 
+-   Response :
+
 ```json
 {
     "code": "Number"
@@ -303,7 +317,8 @@ Backend server for gervichstore-client website.
     -   Content-Type : `application/json`
     -   Accept : `application/json`
     -   x-access-token: `token`
-- Response : 
+-   Response :
+
 ```json
 {
     "code": "Number"

@@ -8,12 +8,13 @@ import (
 	"github.com/ryanadiputraa/gervichstore-server/controllers"
 	"github.com/ryanadiputraa/gervichstore-server/helpers"
 	"github.com/ryanadiputraa/gervichstore-server/middlewares"
+	"github.com/ryanadiputraa/gervichstore-server/models"
 )
 
 // THINGS TO DO
-// - handle items api get, getAll, update, delete
-// - get image from server for GetItems api
-// - store image to server for CreateItem api
+// - handler GET request without given an id
+// - manage image from server for products api
+// - improve console logger
 
 func main() {
 
@@ -23,7 +24,7 @@ func main() {
 
 	// 404
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		response := helpers.ErrorMessageFormat {
+		response := models.ErrorMessageFormat {
 			Code: 404,
 			Error: "not found",
 		}

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
+	"time"
 
 	"github.com/ryanadiputraa/gervichstore-server/config"
 	"github.com/ryanadiputraa/gervichstore-server/helpers"
@@ -48,8 +48,16 @@ func (*ProductHandlers) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 		rows.Scan(&product.ID, &product.Image, &product.Name, &product.Price, &product.Stock, &product.Category, &product.CreatedAt, &product.UpdatedAt)
 		products = append(products, product)
 	}
+	if products == nil {
+		products = models.Products{}
+	}
 
-	jsonBytes, err := json.Marshal(products)
+	response := models.ProductsResponseFormat {
+		Code: http.StatusOK,
+		Data: products,
+	}
+
+	jsonBytes, err := json.Marshal(response)
 	if err != nil {
 		helpers.WriteInternalServerError(w, r)
 		return
@@ -84,7 +92,7 @@ func(*ProductHandlers) CreateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := helpers.SuccessMessageFormat {
+	response := models.SuccessMessageFormat {
 		Code: http.StatusCreated,
 	}
 	jsonBytes, err := json.Marshal(response)
@@ -101,12 +109,15 @@ func(*ProductHandlers) CreateProduct(w http.ResponseWriter, r *http.Request) {
 // GetProduct is an api handler to find certain product in db based on product id
 func(*ProductHandlers) GetProduct(w http.ResponseWriter, r *http.Request) {
 	db, err := config.OpenConnection()
-	if err != nil {
+	if err != nil {if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadRequest, "bad request")
+		return
+	}
 		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
 		return
 	}
 
-	productId := strings.Split(r.URL.String(), "/")[3]
+	productId := helpers.GetURLParams(r, 3)
 	row, err := db.Query(fmt.Sprintf("SELECT * FROM products WHERE id=%v", productId))
 	if err != nil {
 		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")	
@@ -120,8 +131,13 @@ func(*ProductHandlers) GetProduct(w http.ResponseWriter, r *http.Request) {
 		return	
 	}
 	row.Scan(&product.ID, &product.Image, &product.Name, &product.Price, &product.Stock, &product.Category, &product.CreatedAt, &product.UpdatedAt)
+
+	response := models.ProductResponseFormat {
+		Code: http.StatusOK,
+		Data: product,
+	}
 	
-	jsonBytes, err := json.Marshal(product)
+	jsonBytes, err := json.Marshal(response)
 	if err != nil {
 		helpers.WriteInternalServerError(w, r)
 		return	
@@ -135,12 +151,66 @@ func(*ProductHandlers) GetProduct(w http.ResponseWriter, r *http.Request) {
 
 // UpdateProduct is an api handler to update certain product in db based on product id
 func(*ProductHandlers) UpdateProduct(w http.ResponseWriter, r *http.Request) {
-	return
+	db, err := config.OpenConnection()
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
+		return
+	}
 
+	productId := helpers.GetURLParams(r, 3)
+	var updatedProduct models.Product
+	err = json.NewDecoder(r.Body).Decode(&updatedProduct)
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadRequest, "bad request")
+		return
+	}
+
+	query := fmt.Sprintf("UPDATE products SET image = '%v', name = '%v', price = %v, stock = %v, category = '%v', updated_at = '%v' WHERE id = %v", updatedProduct.Image, updatedProduct.Name, updatedProduct.Price, updatedProduct.Stock, updatedProduct.Category, time.Now().Format(time.RFC3339), productId)
+	_, err = db.Exec(query)
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")	
+		return
+	}
+
+	response := models.SuccessMessageFormat {
+		Code: http.StatusCreated,
+	}
+	jsonBytes, err := json.Marshal(response)
+	if err != nil {
+		helpers.WriteInternalServerError(w, r)
+		return	
+	}
+
+	helpers.WriteResponse(w, r, "application/json", http.StatusAccepted, jsonBytes)
+	defer db.Close()
+	return
 }
 
 // DeleteProduct is an api handler to delete certain product in db based on product id
 func(*ProductHandlers) DeleteProduct(w http.ResponseWriter, r *http.Request) {
-	return
+	db, err := config.OpenConnection()
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
+		return
+	}
 
+	productId := helpers.GetURLParams(r, 3)
+	_, err = db.Query(fmt.Sprintf("DELETE FROM products WHERE id = %v", productId))
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
+		return
+	}
+
+	response := models.SuccessMessageFormat {
+		Code: http.StatusOK,
+	}
+	jsonBytes, err := json.Marshal(response)
+	if err != nil {
+		helpers.WriteInternalServerError(w, r)
+		return
+	}
+
+	helpers.WriteResponse(w, r, "application/json", http.StatusOK, jsonBytes)
+	defer db.Close()
+	return
 }
