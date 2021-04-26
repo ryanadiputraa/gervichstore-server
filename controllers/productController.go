@@ -13,7 +13,13 @@ func ProductController(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		productHandlers.GetProduct(w, r)	
+		// check if theres an id on URL, if not get all products
+		productId := helpers.GetURLParams(r, 3)
+		if len(productId) > 0 {
+			productHandlers.GetProduct(w, r)
+			return	
+		}
+		productHandlers.GetAllProducts(w, r)
 	case "POST":
 		productHandlers.CreateProduct(w, r)
 	case "PUT":

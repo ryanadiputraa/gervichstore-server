@@ -12,7 +12,6 @@ import (
 )
 
 // THINGS TO DO
-// - handler GET request without given an id
 // - manage image from server for products api
 // - improve console logger
 
