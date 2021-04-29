@@ -14,6 +14,7 @@ func WriteResponse(w http.ResponseWriter, r *http.Request, contentType string, s
 	w.Header().Set("Accept", "application/json")
 	w.Header().Set("Content-Type", contentType)
 	w.WriteHeader(statusCode)
+	logResponseStatusCode(w, r)
 	w.Write(jsonBytes)
 }
 
@@ -23,6 +24,7 @@ func WriteInternalServerError(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Accept", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusInternalServerError)
+	logResponseStatusCode(w, r)
 	w.Write([]byte("Internal server error"))
 }
 
