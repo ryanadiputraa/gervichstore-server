@@ -10,7 +10,7 @@ import (
 )
 
 // THINGS TO DO
-// - manage image from server for products api
+// - manage image inside update and delete products api
 
 func main() {
 

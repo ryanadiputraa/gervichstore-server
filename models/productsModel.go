@@ -1,9 +1,11 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Product struct {
-	ID string `json:"id"`
+	ID int `json:"id"`
 	Image string `json:"image"`
 	Name string `json:"name"`
 	Price int `json:"price"`

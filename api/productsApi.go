@@ -3,7 +3,11 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/ryanadiputraa/gervichstore-server/config"
@@ -77,18 +81,50 @@ func(*ProductHandlers) CreateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// assign product data
 	newProduct := models.NewProduct()
-	err = json.NewDecoder(r.Body).Decode(&newProduct)
+	newProduct.Name = r.FormValue("name")
+	newProduct.Price, err = strconv.Atoi(r.FormValue("price"))
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadRequest, "price must be int")
+		return
+	}
+	newProduct.Stock, err = strconv.Atoi(r.FormValue("stock"))
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadRequest, "stock must be int")
+		return
+	}
+	newProduct.Category = r.FormValue("category")
+	
+	// store and assign product image
+	r.ParseMultipartForm(10 << 20)
+	file, handler, err := r.FormFile("image")
 	if err != nil {
 		helpers.WriteErrorResponse(w, r, http.StatusBadRequest, "bad request")
 		return
 	}
-	
-	query := `INSERT INTO products (image, name, price, stock, category, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	defer file.Close()
 
-	_, err = db.Exec(query, newProduct.Image, newProduct.Name, newProduct.Price, newProduct.Stock, newProduct.Category, newProduct.CreatedAt, newProduct.UpdatedAt)
+	newProduct.Image = fmt.Sprintf("%v/%v", os.Getenv("BASE_URL"), handler.Filename)
+	fileLocation := filepath.Join("uploads", handler.Filename)
+	targetFile, err := os.OpenFile(fileLocation, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
-		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")	
+		helpers.WriteInternalServerError(w, r)
+		return
+	}
+	defer targetFile.Close()
+
+	if _, err := io.Copy(targetFile, file); err != nil {
+		helpers.WriteInternalServerError(w, r)
+		return
+	}
+
+	// insert product to database
+	query := `INSERT INTO products (name, image, price, stock, category, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+
+	_, err = db.Exec(query, newProduct.Name, newProduct.Image, newProduct.Price, newProduct.Stock, newProduct.Category, newProduct.CreatedAt, newProduct.UpdatedAt)
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadRequest, "bad request")	
 		return
 	}
 
@@ -109,10 +145,7 @@ func(*ProductHandlers) CreateProduct(w http.ResponseWriter, r *http.Request) {
 // GetProduct is an api handler to find certain product in db based on product id
 func(*ProductHandlers) GetProduct(w http.ResponseWriter, r *http.Request) {
 	db, err := config.OpenConnection()
-	if err != nil {if err != nil {
-		helpers.WriteErrorResponse(w, r, http.StatusBadRequest, "bad request")
-		return
-	}
+	if err != nil {
 		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
 		return
 	}
