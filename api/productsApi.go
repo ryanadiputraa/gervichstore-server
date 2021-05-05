@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/ryanadiputraa/gervichstore-server/config"
@@ -226,12 +227,35 @@ func(*ProductHandlers) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
 		return
 	}
-
 	productId := helpers.GetURLParams(r, 3)
+
+	// check if product exist
+	row, err := db.Query(fmt.Sprintf("SELECT image FROM products WHERE id = %v", productId))
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")	
+		return	
+	}
+	isNotNull := row.Next()
+	if !isNotNull {
+		helpers.WriteErrorResponse(w, r, http.StatusNotFound, "not found")	
+		return	
+	}
+
+	// Delete product that exist
 	_, err = db.Query(fmt.Sprintf("DELETE FROM products WHERE id = %v", productId))
 	if err != nil {
 		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
 		return
+	}
+	var productImage string
+	row.Scan(&productImage)
+	productImage = strings.Split(productImage, "/")[1]
+	if _, err := os.Stat(fmt.Sprintf("%v/uploads/%v",os.Getenv("WORKING_DIRECTORY") ,productImage)); !os.IsNotExist(err) {
+		fmt.Print("File exist")
+		if err = os.Remove(fmt.Sprintf("%v/uploads/%v",os.Getenv("WORKING_DIRECTORY"), productImage)); err != nil {
+			helpers.WriteInternalServerError(w, r)
+			return
+		}
 	}
 
 	response := models.SuccessMessageFormat {
