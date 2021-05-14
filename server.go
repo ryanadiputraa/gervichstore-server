@@ -9,9 +9,6 @@ import (
 	"github.com/ryanadiputraa/gervichstore-server/middlewares"
 )
 
-// THINGS TO DO
-// - manage image inside update and delete products api
-
 func main() {
 
 	// routes

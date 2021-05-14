@@ -3,16 +3,20 @@ package config
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
-func OpenConnection() (*sql.DB, error) {
-	err := godotenv.Load(".env")
-	if err != nil {
-		return nil, err
+var (
+	DB *sql.DB
+)
+
+func init() () {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Fatal(err)
 	}
 
 	host := os.Getenv("POSTGRES_HOST")
@@ -22,18 +26,12 @@ func OpenConnection() (*sql.DB, error) {
 
 	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", host, user, password, databaseName)
 
-	db, err := sql.Open("postgres", desc)
+	DB, err := sql.Open("postgres", desc)
 	if err != nil {
-		return nil, err
-	}
+		log.Fatal(err)
+	} 
 
-	err = db.Ping()
-	if err != nil {
-		return nil, err
-	}
+	DB.SetMaxIdleConns(10)
+	DB.SetMaxOpenConns(10)
 
-	db.SetMaxIdleConns(10)
-	db.SetMaxOpenConns(10)
-
-	return db, nil
 }
