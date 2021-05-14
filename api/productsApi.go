@@ -36,6 +36,13 @@ func NewProductHandlers() *ProductHandlers {
 func (*ProductHandlers) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 	db:= config.DB
 
+	productNameQuery, ok := r.URL.Query()["productName"]
+	if ok {
+		fmt.Println(productNameQuery)
+	} else {
+		fmt.Println("no query")
+	}
+
 	rows, err := db.Query("SELECT * FROM products")
 	if err != nil {
 		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
@@ -66,7 +73,6 @@ func (*ProductHandlers) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 
 	helpers.WriteResponse(w, r, "application/json", http.StatusOK, jsonBytes)
 	defer rows.Close()
-	defer db.Close()
 	return
 }
 
@@ -102,7 +108,6 @@ func(*ProductHandlers) GetProduct(w http.ResponseWriter, r *http.Request) {
 
 	helpers.WriteResponse(w, r, "application/json", http.StatusOK, jsonBytes)
 	defer row.Close()
-	defer db.Close()
 	return
 }
 
@@ -168,7 +173,6 @@ func(*ProductHandlers) CreateProduct(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	helpers.WriteResponse(w, r, "application/json", http.StatusCreated, jsonBytes)
-	defer db.Close()
 	return
 }
 
@@ -180,7 +184,7 @@ func(*ProductHandlers) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	productId := helpers.GetURLParams(r, 3)
 	row, err := db.Query(fmt.Sprintf("SELECT image FROM products WHERE id = %v", productId))
 	if err != nil {
-		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")	
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "provide an id")	
 		return	
 	}
 	var currentProduct models.Product
@@ -254,7 +258,6 @@ func(*ProductHandlers) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	helpers.WriteResponse(w, r, "application/json", http.StatusAccepted, jsonBytes)
-	defer db.Close()
 	return
 }
 
@@ -303,6 +306,5 @@ func(*ProductHandlers) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	helpers.WriteResponse(w, r, "application/json", http.StatusOK, jsonBytes)
-	defer db.Close()
 	return
 }

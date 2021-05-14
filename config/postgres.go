@@ -15,7 +15,8 @@ var (
 )
 
 func init() () {
-	if err := godotenv.Load(".env"); err != nil {
+	err := godotenv.Load(".env"); 
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -26,7 +27,7 @@ func init() () {
 
 	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", host, user, password, databaseName)
 
-	DB, err := sql.Open("postgres", desc)
+	DB, err = sql.Open("postgres", desc)
 	if err != nil {
 		log.Fatal(err)
 	} 

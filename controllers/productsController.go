@@ -14,6 +14,8 @@ func ProductsController(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		productHandlers.GetAllProducts(w, r)
+	case "POST":
+		productHandlers.CreateProduct(w, r)
 	default:
 		helpers.WriteErrorResponse(w, r, http.StatusMethodNotAllowed, "method not allowed")
 		return
