@@ -119,6 +119,33 @@ Backend server for gervichstore-client website.
 }
 ```
 
+### Get Products by Product Name
+
+-   Method : `GET`
+-   Endpoint : `/api/products?productName={name}`
+-   Header :
+    -   Content-Type : `application/json`
+    -   Accept : `application/json`
+-   Response :
+
+```json
+{
+    "code": "Number",
+    "data": [
+        {
+            "id": "Number",
+            "image": "String",
+            "name": "String",
+            "price": "Number",
+            "stock": "Number",
+            "category": "String",
+            "created_at": "TimeStamp",
+            "updated_at": "TimeStamp"
+        }
+    ]
+}
+```
+
 ### Create Product
 
 -   Method : `POST`

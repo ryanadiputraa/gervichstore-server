@@ -36,14 +36,15 @@ func NewProductHandlers() *ProductHandlers {
 func (*ProductHandlers) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 	db:= config.DB
 
+	var query string
 	productNameQuery, ok := r.URL.Query()["productName"]
 	if ok {
-		fmt.Println(productNameQuery)
+		query = fmt.Sprintf("SELECT * FROM products WHERE LOWER(name) LIKE LOWER('%v%%')", productNameQuery[0])
 	} else {
-		fmt.Println("no query")
+		query = "SELECT * FROM products"
 	}
 
-	rows, err := db.Query("SELECT * FROM products")
+	rows, err := db.Query(query)
 	if err != nil {
 		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
 		return
