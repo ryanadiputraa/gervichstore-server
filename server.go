@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/ryanadiputraa/gervichstore-server/api"
 	"github.com/ryanadiputraa/gervichstore-server/controllers"
+	api "github.com/ryanadiputraa/gervichstore-server/handlers"
 	"github.com/ryanadiputraa/gervichstore-server/middlewares"
 )
 

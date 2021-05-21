@@ -1,4 +1,4 @@
-package api
+package handlers
 
 import (
 	"encoding/json"
@@ -34,7 +34,11 @@ func NewProductHandlers() *ProductHandlers {
 
 // GetAllProducts is an api handler to serve all products in db
 func (*ProductHandlers) GetAllProducts(w http.ResponseWriter, r *http.Request) {
-	db:= config.DB
+	db, err := config.OpenConnection()
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
+	}
+	defer db.Close()
 
 	var query string
 	productNameQuery, ok := r.URL.Query()["productName"]
@@ -79,7 +83,11 @@ func (*ProductHandlers) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 
 // GetProduct is an api handler to find certain product in db based on product id
 func(*ProductHandlers) GetProduct(w http.ResponseWriter, r *http.Request) {
-	db := config.DB
+	db, err := config.OpenConnection()
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
+	}
+	defer db.Close()
 
 	productId := helpers.GetURLParams(r, 3)
 	row, err := db.Query(fmt.Sprintf("SELECT * FROM products WHERE id=%v", productId))
@@ -115,7 +123,11 @@ func(*ProductHandlers) GetProduct(w http.ResponseWriter, r *http.Request) {
 // CreateProduct is an api handler to post new product to db
 func(*ProductHandlers) CreateProduct(w http.ResponseWriter, r *http.Request) {
 	var err error
-	db:= config.DB
+	db, err := config.OpenConnection()
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
+	}
+	defer db.Close()
 
 	// assign product data
 	newProduct := models.NewProduct()
@@ -179,7 +191,11 @@ func(*ProductHandlers) CreateProduct(w http.ResponseWriter, r *http.Request) {
 
 // UpdateProduct is an api handler to update certain product in db based on product id
 func(*ProductHandlers) UpdateProduct(w http.ResponseWriter, r *http.Request) {
-	db:= config.DB
+	db, err := config.OpenConnection()
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
+	}
+	defer db.Close()
 
 	// delete current image
 	productId := helpers.GetURLParams(r, 3)
@@ -264,7 +280,11 @@ func(*ProductHandlers) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 
 // DeleteProduct is an api handler to delete certain product in db based on product id
 func(*ProductHandlers) DeleteProduct(w http.ResponseWriter, r *http.Request) {
-	db:= config.DB
+	db, err := config.OpenConnection()
+	if err != nil {
+		helpers.WriteErrorResponse(w, r, http.StatusBadGateway, "bad gateway")
+	}
+	defer db.Close()
 	
 	productId := helpers.GetURLParams(r, 3)
 

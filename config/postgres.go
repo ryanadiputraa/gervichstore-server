@@ -11,12 +11,11 @@ import (
 )
 
 var (
-	DB *sql.DB
+	db *sql.DB
 )
 
-func init() () {
-	err := godotenv.Load(".env"); 
-	if err != nil {
+func OpenConnection() (*sql.DB, error) {
+	if err := godotenv.Load(".env"); err != nil {
 		log.Fatal(err)
 	}
 
@@ -27,12 +26,14 @@ func init() () {
 
 	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", host, user, password, databaseName)
 
-	DB, err = sql.Open("postgres", desc)
+	db, err := sql.Open("postgres", desc)
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	} 
 
-	DB.SetMaxIdleConns(10)
-	DB.SetMaxOpenConns(10)
+	db.SetMaxIdleConns(10)
+	db.SetMaxOpenConns(10)
 
+	return db, nil
 }

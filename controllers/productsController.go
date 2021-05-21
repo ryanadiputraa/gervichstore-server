@@ -3,14 +3,14 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/ryanadiputraa/gervichstore-server/api"
 	"github.com/ryanadiputraa/gervichstore-server/config"
+	"github.com/ryanadiputraa/gervichstore-server/handlers"
 	"github.com/ryanadiputraa/gervichstore-server/helpers"
 )
 
 // ProductsController is a controller for /api/products route
 func ProductsController(w http.ResponseWriter, r *http.Request) {
-	productHandlers := api.NewProductHandlers()
+	productHandlers := handlers.NewProductHandlers()
 	config.SetupCors(&w)
 	if (*r).Method == "OPTIONS" {
 		return
