@@ -122,7 +122,7 @@ Backend server for gervichstore-client website.
 ### Get Products by Product Name
 
 -   Method : `GET`
--   Endpoint : `/api/products?productName={name}`
+-   Endpoint : `/api/products?product_name={name}`
 -   Header :
     -   Content-Type : `application/json`
     -   Accept : `application/json`

@@ -10,6 +10,7 @@ import (
 
 // WriteResponse is a helper for writing http response
 func WriteResponse(w http.ResponseWriter, r *http.Request, contentType string, statusCode int, jsonBytes []byte) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Status", fmt.Sprintf("%v", statusCode))
 	w.Header().Set("Accept", "application/json")
 	w.Header().Set("Content-Type", contentType)

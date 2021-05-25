@@ -41,7 +41,7 @@ func (*ProductHandlers) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var query string
-	productNameQuery, ok := r.URL.Query()["productName"]
+	productNameQuery, ok := r.URL.Query()["product_name"]
 	if ok {
 		query = fmt.Sprintf("SELECT * FROM products WHERE LOWER(name) LIKE LOWER('%v%%')", productNameQuery[0])
 	} else {
